@@ -1,24 +1,30 @@
-require('dotenv').config(); const express = require('express'); const 
-axios = require('axios'); const cors = require('cors'); const app = 
-express(); app.use(cors()); app.use(express.json()); const PORT = 
-process.env.PORT || 3000; const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY; 
-const SKYSCANNER_API_URL = 'https://sky-scanner3.p.rapidapi.com'; 
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
 app.get('/', (req, res) => {
-  res.send('Welcome to Weeeefly API');
+  res.send('Hello, world!');
 });
-app.get('/search-cars', async (req, res) => { try { const { 
-    pickUpEntityId } = req.query; const response = await 
-    axios.get(`${SKYSCANNER_API_URL}/cars/search`, {
-      params: { pickUpEntityId }, headers: { 'x-rapidapi-key': 
-        RAPIDAPI_KEY, 'x-rapidapi-host': 'sky-scanner3.p.rapidapi.com'
-      }
-    });
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error:', error.response ? error.response.data : 
-    error.message); res.status(500).json({ error: 'An error occurred 
-    while searching for car rentals' });
-  }
+
+app.use((req, res, next) => {
+  const error = new Error('Not Found');
+  error.status = 404;
+  next(error);
 });
-app.listen(PORT, () => { console.log(`Server running on port ${PORT}`);
+
+app.use((error, req, res, next) => {
+  console.error('Error:', error.message);
+  res.status(error.status || 500).json({ error: error.message });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
