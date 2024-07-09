@@ -1,11 +1,10 @@
 import React from 'react';
-import SplitFlap from './components/SplitFlap';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
     <div className="App">
-      <h1>My Weeeefly App</h1>
-      <SplitFlap />
+      <HomePage />
     </div>
   );
 }
