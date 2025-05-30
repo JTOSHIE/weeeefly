@@ -1,0 +1,36 @@
+.split-flap {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 20px 0;
+}
+
+.flap {
+  background-color: var(--flap-inactive, #1a1a1a);
+  color: var(--flap-active, #FFD700);
+  padding: 10px;
+  margin: 2px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  animation: flipIn 0.5s ease-out;
+}
+
+@keyframes flipIn {
+  0% {
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateX(0);
+    opacity: 1;
+  }
+}
+
+.flap:hover {
+  background-color: var(--flap-active, #FFD700);
+  color: var(--primary-bg, #000000);
+  transform: scale(1.1);
+}

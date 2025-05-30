@@ -1,13 +1,85 @@
-body {
+/* Global Reset and Base Styles */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root {
+  /* Colors */
+  --primary-bg: #000000;
+  --flap-inactive: #1a1a1a;
+  --flap-active: #FFD700;
+  --text-color: #FFD700;
+  --accent-color: #00BFFF;
+  --error-color: #ff4444;
+  --success-color: #44ff44;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Typography */
+  --font-primary: 'OCR A Std', monospace;
+  --font-fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-primary), var(--font-fallback);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utility Classes */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.5rem;
+}
+
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.error-boundary h2 {
+  color: var(--error-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.error-boundary button {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--accent-color);
+  color: var(--primary-bg);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: opacity 0.3s ease;
+}
+
+.error-boundary button:hover {
+  opacity: 0.8;
 }

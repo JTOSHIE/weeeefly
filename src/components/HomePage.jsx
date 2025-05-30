@@ -1,97 +1,143 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, memo, useRef } from 'react';
+import SplitFlap from './SplitFlap';
+import { useFlightForm } from '../hooks/useFlightForm';
 import './HomePage.css';
 
-const SplitFlap = ({ text }) => {
-  const [currentText, setCurrentText] = useState('');
+const HomePage = memo(() => {
+  const formRef = useRef(null);
+  const [searchResults, setSearchResults] = useState(null);
+  
+  const {
+    values,
+    errors,
+    isSubmitting,
+    handleChange,
+    handleSubmit: submitForm
+  } = useFlightForm();
 
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < text.length) {
-        setCurrentText(prevText => prevText + text[index]);
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [text]);
-
-  return (
-    <div className="split-flap">
-      {currentText.split('').map((char, index) => (
-        <span key={index} className="flap">{char}</span>
-      ))}
-    </div>
-  );
-};
-
-import React, { useState } from 'react';
-
-const HomePage = () => {
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
-  const [departDate, setDepartDate] = useState('');
-  const [returnDate, setReturnDate] = useState('');
-
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    // Handle form submission
-  };
+    
+    await submitForm(async (formValues) => {
+      console.log('Searching flights:', formValues);
+      // TODO: Implement actual API call
+      // const results = await searchFlights(formValues);
+      // setSearchResults(results);
+    });
+  }, [submitForm]);
 
   return (
     <div className="homepage">
-      <main>
-        <form onSubmit={handleSubmit}>
+      <header>
+        <h1 className="logo">Weeeefly</h1>
+        <SplitFlap text="Find Your Perfect Flight" duration={80} />
+      </header>
+      <main role="main" aria-label="Flight search">
+        <form 
+          ref={formRef}
+          onSubmit={handleSubmit}
+          aria-label="Flight search form"
+          noValidate
+        >
           <div className="form-group">
             <label htmlFor="origin">Origin:</label>
             <input
               type="text"
               id="origin"
-              value={origin}
-              onChange={(e) => setOrigin(e.target.value)}
+              name="origin"
+              value={values.origin}
+              onChange={handleChange('origin')}
+              aria-label="Origin airport or city"
+              aria-required="true"
+              aria-invalid={!!errors.origin}
+              aria-describedby={errors.origin ? 'origin-error' : undefined}
               required
             />
+            {errors.origin && (
+              <span id="origin-error" className="error-message" role="alert">
+                {errors.origin}
+              </span>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="destination">Destination:</label>
             <input
               type="text"
               id="destination"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
+              name="destination"
+              value={values.destination}
+              onChange={handleChange('destination')}
+              aria-label="Destination airport or city"
+              aria-required="true"
+              aria-invalid={!!errors.destination}
+              aria-describedby={errors.destination ? 'destination-error' : undefined}
               required
             />
+            {errors.destination && (
+              <span id="destination-error" className="error-message" role="alert">
+                {errors.destination}
+              </span>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="departDate">Depart Date:</label>
             <input
               type="date"
               id="departDate"
-              value={departDate}
-              onChange={(e) => setDepartDate(e.target.value)}
+              name="departDate"
+              value={values.departDate}
+              onChange={handleChange('departDate')}
+              aria-label="Departure date"
+              aria-required="true"
+              aria-invalid={!!errors.departDate}
+              aria-describedby={errors.departDate ? 'depart-error' : undefined}
               required
             />
+            {errors.departDate && (
+              <span id="depart-error" className="error-message" role="alert">
+                {errors.departDate}
+              </span>
+            )}
           </div>
           <div className="form-group">
-            <label htmlFor="returnDate">Return Date:</label>
+            <label htmlFor="returnDate">Return Date (Optional):</label>
             <input
               type="date"
               id="returnDate"
-              value={returnDate}
-              onChange={(e) => setReturnDate(e.target.value)}
-              required
+              name="returnDate"
+              value={values.returnDate}
+              onChange={handleChange('returnDate')}
+              aria-label="Return date (optional)"
+              aria-invalid={!!errors.returnDate}
+              aria-describedby={errors.returnDate ? 'return-error' : undefined}
             />
+            {errors.returnDate && (
+              <span id="return-error" className="error-message" role="alert">
+                {errors.returnDate}
+              </span>
+            )}
           </div>
-          <button type="submit">Search Flights</button>
+          <button 
+            type="submit" 
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
+          >
+            {isSubmitting ? 'Searching...' : 'Search Flights'}
+          </button>
+          {errors.submit && (
+            <div className="error-message" role="alert">
+              {errors.submit}
+            </div>
+          )}
         </form>
       </main>
       <footer>
-        <p>&copy; 2023 Weeeefly. All rights reserved.</p>
+        <p>&copy; 2024 Weeeefly. All rights reserved.</p>
       </footer>
     </div>
   );
-};
+});
+
+HomePage.displayName = 'HomePage';
 
 export default HomePage;

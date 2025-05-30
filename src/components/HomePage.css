@@ -1,24 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=OCR+A+Std&display=swap');
+/* HomePage specific styles - global styles are in index.css */
 
-:root {
-  --primary-bg: #000000;
-  --flap-inactive: #1a1a1a;
-  --flap-active: #FFD700;
-  --text-color: #FFD700;
-  --accent-color: #00BFFF;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'OCR A Std', monospace;
-  background-color: var(--primary-bg);
-  color: var(--text-color);
-  line-height: 1.2;
+.homepage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .container {
@@ -80,6 +65,7 @@ form {
 .form-group {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 label {
@@ -107,14 +93,53 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   background-color: var(--flap-active);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+input[aria-invalid="true"] {
+  border: 2px solid var(--error-color);
 }
 
 footer {
   text-align: center;
   margin-top: 2rem;
   font-size: 14px;
+}
+
+/* Focus styles for accessibility */
+input:focus,
+button:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Skip to content link for screen readers */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-color);
+  color: var(--primary-bg);
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
 }
 
 @media (max-width: 768px) {
@@ -124,5 +149,9 @@ footer {
 
   .flap {
     font-size: 1.125rem; /* 18px */
+  }
+  
+  form {
+    padding: 0 1rem;
   }
 }

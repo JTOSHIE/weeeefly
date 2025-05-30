@@ -2,29 +2,41 @@
   "name": "weeeefly-app",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "dependencies": {
-    "axios": "^1.7.2",
-    "core-js": "^3.37.1",
+    "axios": "^1.7.9",
+    "core-js": "^3.40.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.15.8",
-    "@babel/preset-react": "^7.14.5",
-    "@vitejs/plugin-react-refresh": "^1.3.6",
-    "babel-jest": "^27.2.5",
-    "jest": "^29.7.0",
-    "vite": "^2.6.4"
+    "@vitejs/plugin-react": "^4.3.4",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "vite": "^5.4.12",
+    "vitest": "^2.1.8",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.3",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "prettier": "^3.4.2"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:analyze": "ANALYZE=true vite build",
+    "build:legacy": "vite build --config vite.config.analyze.js",
     "preview": "vite preview",
-    "test": "jest",
-    "start": "node server.js"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write 'src/**/*.{js,jsx,css}'",
+    "start": "node server.js",
+    "clean": "rm -rf dist node_modules/.vite",
+    "prebuild": "npm run clean"
   },
   "repository": {
     "type": "git",
@@ -37,11 +49,8 @@
     "url": "https://github.com/JTOSHIE/weeeefly/issues"
   },
   "homepage": "https://github.com/JTOSHIE/weeeefly#readme",
-  "description": "",
-  "jest": {
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "testEnvironment": "jsdom"
+  "description": "A modern flight search application",
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
